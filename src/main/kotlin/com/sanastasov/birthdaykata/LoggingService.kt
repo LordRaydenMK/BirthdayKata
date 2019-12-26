@@ -7,6 +7,9 @@ import mu.KotlinLogging
 interface LoggingService {
 
     fun logError(t: Throwable, msg: () -> String?): IO<Unit>
+
+    fun <A> IO<A>.logError(msg: (Throwable) -> String?) =
+        handleErrorWith { logError(it) { msg(it) }.followedBy(IO.raiseError(it)) }
 }
 
 class KotlinLoggingLogger : LoggingService {
@@ -15,6 +18,3 @@ class KotlinLoggingLogger : LoggingService {
 
     override fun logError(t: Throwable, msg: () -> String?): IO<Unit> = IO { logger.error(t, msg) }
 }
-
-fun <A> IO<A>.logError(log: (Throwable, () -> String?) -> IO<Unit>, msg: () -> String? = { null }): IO<A> =
-    handleErrorWith { log(it, msg).followedBy(IO.raiseError(it)) }

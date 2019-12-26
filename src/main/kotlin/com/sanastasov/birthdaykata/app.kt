@@ -16,16 +16,16 @@ suspend fun main() {
         EmailService by SmtpEmailService("localhost", 8080),
         LoggingService by KotlinLoggingLogger() {}
 
-    env.sendGreetingsUseCase(date = LocalDate.of(2020, 10, 8)).suspended()
+    env.sendGreetingsUseCase(date = LocalDate.now()).suspended()
 }
 
 fun Env.sendGreetingsUseCase(date: LocalDate): IO<Unit> = IO.fx {
     val allEmployees = allEmployees()
-        .logError(::logError) { "Error reading employees from repo" }
+        .logError { "Error reading employees from repo" }
         .bind()
     val greetings = birthdayMessages(allEmployees, date)
     sendGreetings(greetings)
-        .logError(::logError) { "Error sending emails. Greetings count ${greetings.size} on date: $date" }
+        .logError { "Error sending emails. Greetings count ${greetings.size} on date: $date" }
         .bind()
     Unit
 }
