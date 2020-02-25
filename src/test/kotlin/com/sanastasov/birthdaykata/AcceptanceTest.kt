@@ -1,7 +1,6 @@
 package com.sanastasov.birthdaykata
 
 import com.dumbster.smtp.SimpleSmtpServer
-import com.sanastasov.birthdaykata.fakes.TestLogger
 import io.kotlintest.TestCase
 import io.kotlintest.TestResult
 import io.kotlintest.shouldBe
@@ -18,8 +17,7 @@ class AcceptanceTest : StringSpec() {
     fun testEnv(port: Int): Env = object : Env,
         EmployeeRepository by FileEmployeeRepository("input.txt"),
         BirthdayService by BirthdayServiceInterpreter(),
-        EmailService by SmtpEmailService("localhost", port),
-        LoggingService by TestLogger() {}
+        EmailService by SmtpEmailService("localhost", port) {}
 
     override fun beforeTest(testCase: TestCase) {
         super.beforeTest(testCase)
