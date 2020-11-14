@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.3.61"
+    kotlin("jvm") version "1.4.10"
 }
 
 group = "com.sanastasov"
@@ -15,7 +15,6 @@ tasks.withType<Test> {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
 
     val arrow_version = "0.10.4"
     implementation("io.arrow-kt:arrow-core:$arrow_version")
