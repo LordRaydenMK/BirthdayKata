@@ -1,7 +1,8 @@
 package com.sanastasov.birthdaykata
 
-import io.kotlintest.specs.StringSpec
-import io.kotlintest.shouldBe
+
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 import java.time.Month
 

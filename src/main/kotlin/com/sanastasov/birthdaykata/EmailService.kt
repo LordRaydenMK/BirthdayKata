@@ -1,11 +1,5 @@
 package com.sanastasov.birthdaykata
 
-import arrow.core.extensions.list.traverse.sequence
-import arrow.core.fix
-import arrow.fx.IO
-import arrow.fx.extensions.fx
-import arrow.fx.extensions.io.applicative.applicative
-import arrow.fx.fix
 import java.util.*
 import javax.mail.Message
 import javax.mail.Session
@@ -16,22 +10,18 @@ import javax.mail.internet.MimeMessage
 
 interface EmailService {
 
-    fun sendGreeting(emailMessage: EmailMessage): IO<Unit>
+    suspend fun sendGreeting(emailMessage: EmailMessage): Unit
 
-    fun sendGreetings(greetings: List<EmailMessage>): IO<List<Unit>> =
-        greetings
-            .map { sendGreeting(it) }
-            .sequence(IO.applicative())
-            .fix()
-            .map { it.fix() }
+    suspend fun sendGreetings(greetings: List<EmailMessage>): List<Unit> =
+        greetings.map { sendGreeting(it) }
 }
 
 class SmtpEmailService(private val host: String, private val port: Int) : EmailService {
 
-    override fun sendGreeting(emailMessage: EmailMessage): IO<Unit> = IO.fx {
-        val session = effect { buildSession() }.bind()
-        val message = effect { createMessage(session, emailMessage) }.bind()
-        IO { Transport.send(message) }.bind()
+    override suspend fun sendGreeting(emailMessage: EmailMessage): Unit {
+        val session =  buildSession()
+        val message = createMessage(session, emailMessage)
+        Transport.send(message)
     }
 
     private suspend fun buildSession(): Session {

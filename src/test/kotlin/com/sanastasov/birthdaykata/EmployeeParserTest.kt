@@ -2,8 +2,8 @@ package com.sanastasov.birthdaykata
 
 import arrow.core.identity
 import arrow.core.valid
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
 class EmployeeParserTest : StringSpec({

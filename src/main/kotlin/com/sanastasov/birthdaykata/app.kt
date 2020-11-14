@@ -1,7 +1,5 @@
 package com.sanastasov.birthdaykata
 
-import arrow.fx.IO
-import arrow.fx.extensions.fx
 import java.time.LocalDate
 
 interface Env : EmployeeRepository,
@@ -14,14 +12,12 @@ suspend fun main() {
         BirthdayService by BirthdayServiceInterpreter(),
         EmailService by SmtpEmailService("localhost", 8080) {}
 
-    env.sendGreetingsUseCase(date = LocalDate.now()).suspended()
+    env.sendGreetingsUseCase(date = LocalDate.now())
 }
 
-fun Env.sendGreetingsUseCase(date: LocalDate): IO<Unit> = IO.fx {
+suspend fun Env.sendGreetingsUseCase(date: LocalDate): Unit {
     val allEmployees = allEmployees()
-        .bind()
     val greetings = birthdayMessages(allEmployees, date)
     sendGreetings(greetings)
-        .bind()
     Unit
 }

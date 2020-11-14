@@ -1,10 +1,10 @@
 package com.sanastasov.birthdaykata
 
 import com.dumbster.smtp.SimpleSmtpServer
-import io.kotlintest.TestCase
-import io.kotlintest.TestResult
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.core.test.TestCase
+import io.kotest.core.test.TestResult
+import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
 /**
@@ -33,7 +33,6 @@ class AcceptanceTest : StringSpec() {
         "will send greeting when it is somebody birthday" {
             testEnv(server.port)
                 .sendGreetingsUseCase(LocalDate.of(2019, 10, 8))
-                .unsafeRunSync()
 
             val sent = server.receivedEmails.toList()
 
@@ -48,7 +47,6 @@ class AcceptanceTest : StringSpec() {
         "will not send greeting when there is no birthday" {
             testEnv(server.port)
                 .sendGreetingsUseCase(LocalDate.of(2019, 12, 1))
-                .unsafeRunSync()
 
             server.receivedEmails.toList().size shouldBe 0
         }
