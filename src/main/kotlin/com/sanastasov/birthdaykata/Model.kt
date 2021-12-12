@@ -1,12 +1,9 @@
 package com.sanastasov.birthdaykata
 
-import arrow.core.Nel
 import arrow.core.ValidatedNel
-import arrow.core.extensions.nonemptylist.semigroup.semigroup
-import arrow.core.extensions.validated.applicative.applicative
-import arrow.core.fix
 import arrow.core.invalidNel
 import arrow.core.valid
+import arrow.core.zip
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -52,14 +49,11 @@ data class Employee(
             dateOfBirth: String?,
             email: String?
         ): ValidationResult<Employee> =
-            ValidationResult.applicative(Nel.semigroup<String>())
-                .tupledN(
-                    validateName(firstName),
-                    validateName(lastName),
-                    validateDateOfBirth(dateOfBirth),
-                    EmailAddress(email)
-                ).fix()
-                .map { (fn, ln, dob, e) -> Employee(fn, ln, dob, e) }
+            validateName(firstName).zip(
+                validateName(lastName),
+                validateDateOfBirth(dateOfBirth),
+                EmailAddress(email)
+            ) { fn, ln, dob, em -> Employee(fn, ln, dob, em) }
     }
 }
 
