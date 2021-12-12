@@ -10,7 +10,8 @@ import java.time.format.DateTimeParseException
 
 typealias ValidationResult<A> = ValidatedNel<String, A>
 
-data class EmailAddress(val email: String) {
+@JvmInline
+value class EmailAddress private constructor(val email: String) {
 
     companion object {
 

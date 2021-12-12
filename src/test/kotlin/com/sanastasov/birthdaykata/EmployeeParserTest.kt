@@ -18,7 +18,7 @@ class EmployeeParserTest : StringSpec({
             "John",
             "Doe",
             LocalDate.of(1982, 10, 8),
-            EmailAddress("john.doe@foobar.com")
+            EmailAddress.unsafeCreate("john.doe@foobar.com")
         ).valid()
     }
 

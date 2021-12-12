@@ -1,5 +1,6 @@
 package com.sanastasov.birthdaykata
 
+import arrow.core.identity
 import java.time.LocalDate
 import java.time.Month
 
@@ -28,6 +29,7 @@ class BirthdayServiceInterpreter : BirthdayService {
     companion object {
 
         private val SENDER_EMAIL = EmailAddress("birthday@corp.com")
+            .fold({ throw IllegalArgumentException("Invalid email $it") }, ::identity)
     }
 }
 

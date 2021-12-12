@@ -12,7 +12,7 @@ class FileEmployeeRepositoryTest : StringSpec({
         val sut: EmployeeRepository = FileEmployeeRepository("input.txt")
 
         val allEmployees = sut.allEmployees()
-        val expectedEmails = listOf("john.doe@foobar.com", "mary.ann@foobar.com").map(::EmailAddress)
+        val expectedEmails = listOf("john.doe@foobar.com", "mary.ann@foobar.com").map(EmailAddress::unsafeCreate)
         allEmployees.size shouldBe 2
         allEmployees.map { it.emailAddress } shouldBe expectedEmails
     }

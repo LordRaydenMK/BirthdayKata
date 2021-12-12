@@ -15,7 +15,7 @@ class BirthdayServiceInterpreterTest : StringSpec() {
             val messages = sut.birthdayMessages(testData(), LocalDate.of(2020, 10, 10))
 
             messages.size shouldBe 2
-            messages.map { it.to } shouldBe listOf("arso@foobar.com", "pero@foobar.com").map(::EmailAddress)
+            messages.map { it.to } shouldBe listOf("arso@foobar.com", "pero@foobar.com").map(EmailAddress::unsafeCreate)
         }
 
         "returns empty list when there is no birthday" {
@@ -28,8 +28,8 @@ class BirthdayServiceInterpreterTest : StringSpec() {
             val messages = sut.birthdayMessages(testData(), LocalDate.of(2020, 5, 5))
 
             messages.first() shouldBe EmailMessage(
-                EmailAddress("birthday@corp.com"),
-                EmailAddress("tosho@foobar.com"),
+                EmailAddress.unsafeCreate("birthday@corp.com"),
+                EmailAddress.unsafeCreate("tosho@foobar.com"),
                 "Happy Birthday!",
                 "Happy birthday, dear Toshe!"
             )
@@ -51,10 +51,10 @@ class BirthdayServiceInterpreterTest : StringSpec() {
 
     private fun testData(): List<Employee> =
         listOf(
-            Employee("Arso", "Arsov", LocalDate.of(1990, 10, 10), EmailAddress("arso@foobar.com")),
-            Employee("Petar", "Petrov", LocalDate.of(1980, 10, 10), EmailAddress("pero@foobar.com")),
-            Employee("Toshe", "Toshev", LocalDate.of(1997, 5, 5), EmailAddress("tosho@foobar.com")),
-            Employee("John", "Doe", LocalDate.of(1991, 2, 28), EmailAddress("jd17@foobar.com")),
-            Employee("Jane", "Doe", LocalDate.of(1992, 2, 29), EmailAddress("jd22@foobar.com"))
+            Employee("Arso", "Arsov", LocalDate.of(1990, 10, 10), EmailAddress.unsafeCreate("arso@foobar.com")),
+            Employee("Petar", "Petrov", LocalDate.of(1980, 10, 10), EmailAddress.unsafeCreate("pero@foobar.com")),
+            Employee("Toshe", "Toshev", LocalDate.of(1997, 5, 5), EmailAddress.unsafeCreate("tosho@foobar.com")),
+            Employee("John", "Doe", LocalDate.of(1991, 2, 28), EmailAddress.unsafeCreate("jd17@foobar.com")),
+            Employee("Jane", "Doe", LocalDate.of(1992, 2, 29), EmailAddress.unsafeCreate("jd22@foobar.com"))
         )
 }
